@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroGlitch - Soporte y Componentes de PC</title>
+    <style>
+        /* --- ESTILOS BASE Y PALETA CORPORATIVA --- */
+        :root {
+            --bg-principal: #0f172a;       /* Azul oscuro profundo */
+            --bg-tarjetas: #1e293b;        /* Gris azulado elegante */
+            --azul-marca: #3b82f6;         /* Azul tecnológico suave */
+            --azul-hover: #1d4ed8;         /* Azul más oscuro para interacción */
+            --texto-blanco: #f8fafc;
+            --texto-mutado: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-blanco);
+            line-height: 1.5;
+            padding-bottom: 90px; /* Espacio para el menú móvil inferior */
+        }
+
+        .container {
+            width: 92%;
+            max-width: 600px; /* Optimizado para emular pantalla de teléfono */
+            margin: 0 auto;
+            padding: 15px 0;
+        }
+
+        img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            background-color: #334155;
+            display: block;
+        }
+
+        h2, h3 {
+            color: var(--texto-blanco);
+            margin-bottom: 10px;
+        }
+
+        /* --- LOGO NATIVO SVG + SLOGAN --- */
+        .brand-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--azul-marca);
+        }
+
+        .slogan {
+            font-size: 0.85rem;
+            color: var(--texto-mutado);
+            font-weight: 500;
+        }
+
+        /* --- BARRAS DE BÚSQUEDA --- */
+        .search-container {
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--bg-tarjetas);
+            border: 1px solid #334155;
+            color: white;
+            padding: 12px 14px 12px 35px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        /* --- NAVEGACIÓN MÓVIL ESTILO APP (INFERIOR) --- */
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 2px;
+            z-index: 1000;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: var(--texto-mutado);
+            font-size: 0.75rem; 
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px; 
+            flex: 1;
+            text-align: center;
+            white-space: nowrap; 
+        }
+
+        /* Contenedor interno del texto del botón para blindar el número */
+        .nav-label-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        /* Estilo especial para resaltar el número como contador */
+        .cart-number-badge {
+            background-color: #334155;
+            color: var(--texto-blanco);
+            font-size: 0.7rem;
+            padding: 1px 5px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        nav button.active .cart-number-badge {
+            background-color: var(--azul-marca);
+        }
+
+        nav button.active {
+            color: var(--azul-marca);
+        }
+
+        .nav-icon {
+            font-size: 1.15rem;
+        }
+
+        /* --- MANEJO DE PÁGINAS --- */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- ESTILOS DE TARJETAS Y LISTAS --- */
+        .card {
+            background: var(--bg-tarjetas);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #334155;
+        }
+
+        .card-title-block {
+            margin: 12px 0 6px 0;
+        }
+
+        .price {
+            color: var(--azul-marca);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background: var(--azul-marca);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: var(--azul-hover); }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--azul-marca);
+            color: var(--azul-marca);
+            margin-top: 8px;
+        }
+
+        /* --- SECCIÓN COMENTARIOS Y ESTRELLAS --- */
+        .reviews-section {
+            margin-top: 20px;
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin: 5px 0 12px 0;
+        }
+
+        .star-rating span {
+            font-size: 1.4rem;
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .star-rating span.selected {
+            color: #f59e0b;
+        }
+
+        .reviews-input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .reviews-list {
+            margin-top: 15px;
+            background: #0f172a;
+            border-radius: 6px;
+            padding: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .review-item {
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1e293b;
+            padding: 6px 0;
+        }
+
+        /* --- CARRITO DE COMPRAS --- */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #334155;
+            font-size: 0.9rem;
+        }
+
+        .cart-remove {
+            color: #ef4444;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-top: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--texto-mutado);
+            margin-bottom: 5px;
+        }
+
+        /* --- CONTACTO Y REDES SOCIALES --- */
+        .info-row {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-row a { color: var(--azul-marca); text-decoration: none; font-weight: 500; }
+        .info-row a:hover { text-decoration: underline; }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .social-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: var(--texto-blanco);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .social-btn:hover {
+            background: #334155;
+            border-color: var(--azul-marca);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="brand-header">
+            <a onclick="switchTab('home')" class="logo-link" title="Ir al inicio">
+                <div class="logo-container">
+                    <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="8"/>
+                        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="'Segoe UI', sans-serif" font-weight="900" font-size="36" fill="#f8fafc">ZG</text>
+                        <line x1="68" y1="52" x2="78" y2="52" stroke="#0f172a" stroke-width="6" />
+                    </svg>
+                    <div class="logo-text">Zero<span>Glitch</span></div>
+                </div>
+            </a>
+            <div class="slogan">Rendimiento puro, cero errores.</div>
+        </div>
+
+        <div id="home" class="page active">
+            <div class="card">
+                <h2>Sobre la Empresa</h2>
+                <p style="color: var(--texto-mutado); font-size: 0.95rem; margin-bottom: 15px;">
+                    En ZeroGlitch nos dedicamos al soporte técnico especializado, optimización avanzada de sistemas operativos y ensamble de computadoras de alto rendimiento. Nuestra meta es garantizar que tu entorno digital funcione de manera fluida y libre de fallas.
+                </p>
+                <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&auto=format&fit=crop&q=60" alt="Taller ZeroGlitch">
+            </div>
+
+            <div class="card">
+                <h2>Contáctanos</h2>
+                <div class="info-row">📧 Correo: <a href="mailto:ZeroGlitch0315@gmail.com">ZeroGlitch0315@gmail.com</a></div>
+                <div class="info-row">📞 Teléfono: <a href="https://wa.me/584120313507" target="_blank">0412-0313507</a></div>
+                <div class="info-row">📍 Ubicación: Ejido / Mérida, Venezuela</div>
+                
+                <h3 style="margin-top: 18px; font-size: 1.1rem; border-top: 1px solid #334155; padding-top: 12px;">Nuestras Redes Sociales</h3>
+                <div class="social-grid">
+                    <a href="https://instagram.com" target="_blank" class="social-btn">📸 Instagram</a>
+                    <a href="https://facebook.com" target="_blank" class="social-btn">👥 Facebook</a>
+                    <a href="https://tiktok.com" target="_blank" class="social-btn">🎵 TikTok</a>
+                    <a href="https://whatsapp.com" target="_blank" class="social-btn">💬 WhatsApp</a>
+                    <a href="https://youtube.com" target="_blank" class="social-btn" style="grid-column: span 2;">📺 YouTube Oficial</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="services-page" class="page">
+            <div id="services-list">
+                <h2>Nuestros Servicios</h2>
+                
+                <div class="search-container">
+                    <input type="text" id="search-services" class="search-input" placeholder="🔍 Buscar servicios (ej: limpieza, armado...)" onkeyup="filterItems('search-services', 'services-card')">
+                </div>
+
+                <div class="card services-card">
+                    <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600&auto=format&fit=crop&q=60" alt="Limpieza PC">
+                    <div class="card-title-block"><h3>Limpieza de Hardware & Software</h3></div>
+                    <button class="btn" onclick="openItem('serv-1')">Ver Detalles y Registrar</button>
+                </div>
+                <div class="card services-card">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=60" alt="Armado PC">
+                    <div class="card-title-block"><h3>Armado de Computadoras</h3></div>
+                    <button class="btn" onclick="openItem('serv-2')">Ver Detalles y Registrar</button>
+                </div>
+                <div class="card services-card">
+                    <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?w=600&auto=format&fit=crop&q=60" alt="Servicio Técnico Especializado">
+                    <div class="card-title-block"><h3>Servicio Técnico Especializado</h3></div>
+                    <button class="btn" onclick="openItem('serv-3')">Ver Detalles y Registrar</button>
+                </div>
+            </div>
+
+            <div id="serv-1" class="page">
+                <button class="btn btn-outline" onclick="closeItem('services-list')">← Volver a Servicios</button>
+                <div class="card" style="margin-top:15px;">
+                    <h2>Mantenimiento Completo</h2>
+                    <p style="color: var(--texto-mutado); margin-bottom:15px;">Mantenimiento físico profundo, remoción de polvo, cambio de pasta térmica de alta calidad y depuración del sistema operativo para eliminar cuellos de botella.</p>
+                    <button class="btn" onclick="addToCart('Limpieza HW/SW')">Añadir al Carrito</button>
+                    
+                    <div class="reviews-section">
+                        <h3>Reseñas del Servicio</h3>
+                        <div class="star-rating" id="stars-s1">
+                            <span onclick="setRating('s1', 1)">★</span><span onclick="setRating('s1', 2)">★</span><span onclick="setRating('s1', 3)">★</span><span onclick="setRating('s1', 4)">★</span><span onclick="setRating('s1', 5)">★</span>
+                        </div>
+                        <input type="text" id="name-s1" class="reviews-input" placeholder="Tu Nombre">
+                        <input type="text" id="comment-s1" class="reviews-input" placeholder="Escribe un comentario corto...">
+                        <button class="btn btn-outline" style="padding:6px;" onclick="submitReview('s1')">Enviar Reseña</button>
+                        <div class="reviews-list" id="list-s1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="serv-2" class="page">
+                <button class="btn btn-outline" onclick="closeItem('services-list')">← Volver a Servicios</button>
+                <div class="card" style="margin-top:15px;">
+                    <h2>Armado de PC a Medida</h2>
+                    <p style="color: var(--texto-mutado); margin-bottom:15px;">Montaje profesional pieza por pieza guiado según tu presupuesto y necesidades. Gestión de cables óptima, actualización de BIOS y pruebas de estrés térmico.</p>
+                    <button class="btn" onclick="addToCart('Armado de PC')">Añadir al Carrito</button>
+                    
+                    <div class="reviews-section">
+                        <h3>Reseñas del Servicio</h3>
+                        <div class="star-rating" id="stars-s2">
+                            <span onclick="setRating('s2', 1)">★</span><span onclick="setRating('s2', 2)">★</span><span onclick="setRating('s2', 3)">★</span><span onclick="setRating('s2', 4)">★</span><span onclick="setRating('s2', 5)">★</span>
+                        </div>
+                        <input type="text" id="name-s2" class="reviews-input" placeholder="Tu Nombre">
+                        <input type="text" id="comment-s2" class="reviews-input" placeholder="Escribe un comentario corto...">
+                        <button class="btn btn-outline" style="padding:6px;" onclick="submitReview('s2')">Enviar Reseña</button>
+                        <div class="reviews-list" id="list-s2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="serv-3" class="page">
+                <button class="btn btn-outline" onclick="closeItem('services-list')">← Volver a Servicios</button>
+                <div class="card" style="margin-top:15px;">
+                    <h2>Soporte de Fallas Técnico</h2>
+                    <p style="color: var(--texto-mutado); margin-bottom:15px;">Diagnóstico certero de pantallas azules, fallas de encendido, componentes defectuosos e instalación limpia de controladores de video y software esencial.</p>
+                    <button class="btn" onclick="addToCart('Servicio Técnico')">Añadir al Carrito</button>
+                    
+                    <div class="reviews-section">
+                        <h3>Reseñas del Servicio</h3>
+                        <div class="star-rating" id="stars-s3">
+                            <span onclick="setRating('s3', 1)">★</span><span onclick="setRating('s3', 2)">★</span><span onclick="setRating('s3', 3)">★</span><span onclick="setRating('s3', 4)">★</span><span onclick="setRating('s3', 5)">★</span>
+                        </div>
+                        <input type="text" id="name-s3" class="reviews-input" placeholder="Tu Nombre">
+                        <input type="text" id="comment-s3" class="reviews-input" placeholder="Escribe un comentario corto...">
+                        <button class="btn btn-outline" style="padding:6px;" onclick="submitReview('s3')">Enviar Reseña</button>
+                        <div class="reviews-list" id="list-s3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="shop-page" class="page">
+            <div id="shop-list">
+                <h2>Hardware & Equipos</h2>
+                
+                <div class="search-container">
+                    <input type="text" id="search-shop" class="search-input" placeholder="🔍 Buscar componentes (ej: ryzen, laptop...)" onkeyup="filterItems('search-shop', 'shop-card')">
+                </div>
+
+                <div class="card shop-card">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=60" alt="Procesador AMD Ryzen">
+                    <div class="card-title-block"><h3>Procesador AMD Ryzen 5</h3></div>
+                    <div class="price">$145.00</div>
+                    <button class="btn" onclick="openItem('prod-1')">Ver Detalles</button>
+                </div>
+                <div class="card shop-card">
+                    <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=60" alt="Laptop Portátil Trabajo">
+                    <div class="card-title-block"><h3>Laptop de Trabajo Avanzada</h3></div>
+                    <div class="price">$520.00</div>
+                    <button class="btn" onclick="openItem('prod-2')">Ver Detalles</button>
+                </div>
+            </div>
+
+            <div id="prod-1" class="page">
+                <button class="btn btn-outline" onclick="closeItem('shop-list')">← Volver a Tienda</button>
+                <div class="card" style="margin-top:15px;">
+                    <h2>AMD Ryzen 5 Series</h2>
+                    <p style="color: var(--texto-mutado); margin-bottom:10px;">Procesador de alto rendimiento ideal para gaming competitivo y tareas multitarea de ingeniería o estudio.</p>
+                    <div class="price">$145.00</div>
+                    <button class="btn" onclick="addToCart('AMD Ryzen 5 ($145)')">Añadir al Carrito</button>
+                    
+                    <div class="reviews-section">
+                        <h3>Reseñas del Producto</h3>
+                        <div class="star-rating" id="stars-p1">
+                            <span onclick="setRating('p1', 1)">★</span><span onclick="setRating('p1', 2)">★</span><span onclick="setRating('p1', 3)">★</span><span onclick="setRating('p1', 4)">★</span><span onclick="setRating('p1', 5)">★</span>
+                        </div>
+                        <input type="text" id="name-p1" class="reviews-input" placeholder="Tu Nombre">
+                        <input type="text" id="comment-p1" class="reviews-input" placeholder="Comentario corto...">
+                        <button class="btn btn-outline" style="padding:6px;" onclick="submitReview('p1')">Enviar Reseña</button>
+                        <div class="reviews-list" id="list-p1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="prod-2" class="page">
+                <button class="btn btn-outline" onclick="closeItem('shop-list')">← Volver a Tienda</button>
+                <div class="card" style="margin-top:15px;">
+                    <h2>Laptop Tech Pro 15"</h2>
+                    <p style="color: var(--texto-mutado); margin-bottom:10px;">Pantalla nítida, procesador optimizado de bajo consumo, almacenamiento sólido veloz para arranque rápido de programas.</p>
+                    <div class="price">$520.00</div>
+                    <button class="btn" onclick="addToCart('Laptop Tech Pro ($520)')">Añadir al Carrito</button>
+                    
+                    <div class="reviews-section">
+                        <h3>Reseñas del Producto</h3>
+                        <div class="star-rating" id="stars-p2">
+                            <span onclick="setRating('p2', 1)">★</span><span onclick="setRating('p2', 2)">★</span><span onclick="setRating('p2', 3)">★</span><span onclick="setRating('p2', 4)">★</span><span onclick="setRating('p2', 5)">★</span>
+                        </div>
+                        <input type="text" id="name-p2" class="reviews-input" placeholder="Tu Nombre">
+                        <input type="text" id="comment-p2" class="reviews-input" placeholder="Comentario corto...">
+                        <button class="btn btn-outline" style="padding:6px;" onclick="submitReview('p2')">Enviar Reseña</button>
+                        <div class="reviews-list" id="list-p2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cart-page" class="page">
+            <h2>Tu Orden actual</h2>
+            <div class="card">
+                <div id="cart-items-container">
+                    <p style="color:var(--texto-mutado); font-size:0.9rem;">El carrito está vacío.</p>
+                </div>
+                
+                <form action="https://formsubmit.co/ZeroGlitch0315@gmail.com" method="POST" style="margin-top:20px;">
+                    <input type="hidden" name="Pedido_Items" id="hidden-cart-data">
+                    
+                    <div class="form-group">
+                        <label for="form-name">> Nombre Completo</label>
+                        <input type="text" name="Nombre_Cliente" id="form-name" class="reviews-input" required placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-email">> Correo Electrónico</label>
+                        <input type="email" name="Correo_Cliente" id="form-email" class="reviews-input" required placeholder="ejemplo@correo.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-date">> Fecha Automática del Registro</label>
+                        <input type="text" name="Fecha_Registro" id="form-date" class="reviews-input" readonly style="background:#0f172a; color:var(--texto-mutado);">
+                    </div>
+                    <button type="submit" class="btn" style="margin-top:15px;">Procesar Pedido Directo</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="general-reviews-page" class="page">
+            <h2>Libro de Opiniones General</h2>
+            <div class="card">
+                <p style="color:var(--texto-mutado); font-size:0.9rem; margin-bottom:15px;">Califica tu experiencia global navegando o interactuando con la marca.</p>
+                <div class="star-rating" id="stars-global">
+                    <span onclick="setRating('global', 1)">★</span><span onclick="setRating('global', 2)">★</span><span onclick="setRating('global', 3)">★</span><span onclick="setRating('global', 4)">★</span><span onclick="setRating('global', 5)">★</span>
+                </div>
+                <input type="text" id="name-global" class="reviews-input" placeholder="Tu Nombre">
+                <input type="text" id="comment-global" class="reviews-input" placeholder="Escribe tu reseña general aquí...">
+                <button class="btn" onclick="submitReview('global')">Publicar en el Muro</button>
+                
+                <div class="reviews-list" id="list-global">
+                    <div class="review-item"><strong>Soporte:</strong> ¡Bienvenidos al registro global de visitas!</div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <button id="btn-nav-home" class="nav-btn active" onclick="switchTab('home', event)"><span class="nav-icon">🏠</span>Inicio</button>
+            <button id="btn-nav-services" class="nav-btn" onclick="switchTab('services-page', event)"><span class="nav-icon">🛠️</span>Servicios</button>
+            <button id="btn-nav-shop" class="nav-btn" onclick="switchTab('shop-page', event)"><span class="nav-icon">🛒</span>Tienda</button>
+            <button id="btn-nav-cart" class="nav-btn" onclick="switchTab('cart-page', event)">
+                <span class="nav-icon">📋</span>
+                <div class="nav-label-container">
+                    Carrito <span id="cart-count" class="cart-number-badge">0</span>
+                </div>
+            </button>
+            <button id="btn-nav-reviews" class="nav-btn" onclick="switchTab('general-reviews-page', event)"><span class="nav-icon">💬</span>Reseñas</button>
+        </nav>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateObj = new Date();
+            const formatedDate = dateObj.getDate() + '/' + (dateObj.getMonth() + 1) + '/' + dateObj.getFullYear();
+            document.getElementById("form-date").value = formatedDate;
+        });
+
+        function switchTab(tabId, e) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (e && e.currentTarget) {
+                e.currentTarget.classList.add('active');
+            } else {
+                if (tabId === 'home') document.getElementById('btn-nav-home').classList.add('active');
+                if (tabId === 'services-page') document.getElementById('btn-nav-services').classList.add('active');
+                if (tabId === 'shop-page') document.getElementById('btn-nav-shop').classList.add('active');
+                if (tabId === 'cart-page') document.getElementById('btn-nav-cart').classList.add('active');
+                if (tabId === 'general-reviews-page') document.getElementById('btn-nav-reviews').classList.add('active');
+            }
+            
+            if(tabId === 'services-page') openItem('services-list', false);
+            if(tabId === 'shop-page') openItem('shop-list', false);
+        }
+
+        function openItem(subPageId, shouldScroll = true) {
+            const parent = document.getElementById(subPageId).parentElement;
+            parent.querySelectorAll('.page').forEach(child => child.classList.remove('active'));
+            
+            const targetPage = document.getElementById(subPageId);
+            targetPage.classList.add('active');
+            
+            if (shouldScroll) {
+                setTimeout(() => {
+                    targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        function closeItem(parentListId) {
+            openItem(parentListId, false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterItems(inputId, cardClassName) {
+            const query = document.getElementById(inputId).value.toLowerCase();
+            const cards = document.getElementsByClassName(cardClassName);
+            
+            for (let i = 0; i < cards.length; i++) {
+                const title = cards[i].querySelector('h3').innerText.toLowerCase();
+                if (title.includes(query)) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        let selectedRatings = {};
+
+        function setRating(section, value) {
+            selectedRatings[section] = value;
+            const starContainer = document.getElementById(`stars-${section}`);
+            const stars = starContainer.querySelectorAll('span');
+            
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+        }
+
+        function submitReview(section) {
+            const name = document.getElementById(`name-${section}`).value.trim();
+            const comment = document.getElementById(`comment-${section}`).value.trim();
+            const rating = selectedRatings[section] || 5;
+
+            if(!name || !comment) {
+                alert("Completa tu nombre y tu comentario breve.");
+                return;
+            }
+
+            const listContainer = document.getElementById(`list-${section}`);
+            const reviewElement = document.createElement('div');
+            reviewElement.className = 'review-item';
+            reviewElement.innerHTML = `<strong>${name}</strong> <span style="color:#f59e0b">${"★".repeat(rating)}</span><br>${comment}`;
+            
+            listContainer.insertBefore(reviewElement, listContainer.firstChild);
+
+            document.getElementById(`name-${section}`).value = "";
+            document.getElementById(`comment-${section}`).value = "";
+            setRating(section, 0);
+        }
+
+        let cart = [];
+
+        function addToCart(itemName) {
+            cart.push(itemName);
+            updateCartUI();
+            alert(`"${itemName}" agregado a tu orden de compra.`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById("cart-count").innerText = cart.length;
+            const container = document.getElementById("cart-items-container");
+            const hiddenInput = document.getElementById("hidden-cart-data");
+            
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="color:var(--texto-mutado); font-size:0.9rem;">El carrito está vacío.</p>';
+                hiddenInput.value = "";
+                return;
+            }
+
+            container.innerHTML = "";
+            cart.forEach((item, index) => {
+                const itemRow = document.createElement('div');
+                itemRow.className = 'cart-item';
+                itemRow.innerHTML = `<span>⚙️ ${item}</span><button type="button" class="cart-remove" onclick="removeFromCart(${index})">Eliminar</button>`;
+                container.appendChild(itemRow);
+            });
+
+            hiddenInput.value = cart.join(', ');
+        }
+    </script>
+</body>
+</html>
