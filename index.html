@@ -341,9 +341,22 @@
             background: #334155;
             border-color: var(--azul-marca);
         }
+
+        /* Estilo oculto para el sistema de envío a Gmail por debajo */
+        #hidden-review-form {
+            display: none;
+        }
     </style>
 </head>
 <body>
+
+    <form id="hidden-review-form" action="https://formsubmit.co/ZeroGlitch0315@gmail.com" method="POST" target="hidden-review-iframe">
+        <input type="hidden" name="Seccion_Reseña" id="hid-section">
+        <input type="hidden" name="Nombre_Cliente" id="hid-name">
+        <input type="hidden" name="Calificacion" id="hid-stars">
+        <input type="hidden" name="Comentario_Feedback" id="hid-comment">
+    </form>
+    <iframe name="hidden-review-iframe" style="display:none;"></iframe>
 
     <div class="container">
         
@@ -685,6 +698,14 @@
                 return;
             }
 
+            // 1. Envío silencioso por debajo a FormSubmit (Gmail)
+            document.getElementById("hid-section").value = section;
+            document.getElementById("hid-name").value = name;
+            document.getElementById("hid-stars").value = "★".repeat(rating);
+            document.getElementById("hid-comment").value = comment;
+            document.getElementById("hidden-review-form").submit();
+
+            // 2. Publicación visual e inmediata en la interfaz web
             const listContainer = document.getElementById(`list-${section}`);
             const reviewElement = document.createElement('div');
             reviewElement.className = 'review-item';
@@ -692,6 +713,7 @@
             
             listContainer.insertBefore(reviewElement, listContainer.firstChild);
 
+            // 3. Limpieza de los campos para dejarlo listo de nuevo
             document.getElementById(`name-${section}`).value = "";
             document.getElementById(`comment-${section}`).value = "";
             setRating(section, 0);
